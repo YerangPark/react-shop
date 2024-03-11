@@ -1,3 +1,16 @@
+@import url(//cdn.rawgit.com/hiun/NanumSquare/master/nanumsquare.css);
+body {
+  font-family: 'Nanum Square';
+}
+
+.main-bg {
+  height : 500px;
+  /* background-image: url('./img/bg.png'); */
+  background-image: url(https://images.unsplash.com/photo-1617627191898-1408bf607b4d?q=80&w=1451&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+  background-size: cover;
+  background-position: center;
+}
+
 .App {
   text-align: center;
 }

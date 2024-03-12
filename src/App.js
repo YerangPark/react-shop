@@ -1,45 +1,79 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 // Bootstrap
 import { Button, Container, Nav, Navbar, Row, Col} from 'react-bootstrap';
+import data from './data.js';
+import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
+import Detail from './routes/Detail.js';
 
 function App() {
+
+  let [jellys] = useState(data);
+  let navigate = useNavigate();
+
   return (
     <div className="App">
       <Navbar bg="light" data-bs-theme="light">
         <Container>
-          <Navbar.Brand href="#home">Jelly Rang</Navbar.Brand>
+          <Navbar.Brand onClick={()=>{ navigate('/') }}>Jelly Rang</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/detail') }}>Detail</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/about') }}>About</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/event') }}>Event</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
 
-      <div className="main-bg"></div>
-      <br/>
 
-      <Row>
-        <Col>
-          <img height="500px" src="https://images.unsplash.com/photo-1605125207267-f27feb22899d?q=80&w=1364&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"/>
-          <h4>상품명</h4>
-          <p>상품 설명</p>
-        </Col>
-        <Col>
-          <img height="500px" src="https://images.unsplash.com/photo-1605188229517-5336af291329?q=80&w=1364&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"/>
-          <h4>상품명</h4>
-          <p>상품 설명</p>
-        </Col>
-        <Col>
-          <img height="500px" src="https://images.unsplash.com/photo-1605125207921-7252c90ffc79?q=80&w=1336&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"/>
-          <h4>상품명</h4>
-          <p>상품 설명</p>
-        </Col>
-      </Row>
+      <Routes>
+        <Route path="/" element={
+          <>
+            <div className="main-bg"></div>
+            <br/>
+            <Row> {jellys.map((data)=>{return (<Card data={ data }/>)})} </Row>
+          </>
+        }/>
+        <Route path="/detail/:id" element={ <Detail data={ jellys }/> }/>
+        {/* <Route path="/about" element={<About/>}>
+          <Route path="member" element={<div>멤버임</div>}/>
+          <Route path="location" element={<div>오시는 길임</div>}/>
+        </Route>
+        <Route path="/event" element={<Event/>}>
+          <Route path="one" element={<div>첫 주문시 마이구미 서비스</div>}/>
+          <Route path="two" element={<div>생일기념 쿠폰 받기</div>}/>
+        </Route> */}
+        <Route path="*" element={<div>Invalid Access.</div>}/>
+      </Routes>
 
     </div>
   );
+  function About() {
+    return (
+      <div>
+        <h4>회사 정보임</h4>
+        <Outlet></Outlet>
+      </div>
+    )
+  }
+  function Event() {
+    return (
+      <div>
+        <h4>오늘의 이벤트</h4>
+        <Outlet></Outlet>
+      </div>
+    )
+  }
+}
+
+function Card(props) {
+  return (
+    <Col>
+      <img height="300px" src={ props.data.image }/>
+      <h4>{ props.data.title }</h4>
+      <p>{ props.data.price }</p>
+    </Col>
+  )
 }
 
 export default App;

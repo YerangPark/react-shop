@@ -5,11 +5,19 @@ import { Button, Container, Nav, Navbar, Row, Col} from 'react-bootstrap';
 import data from './data.js';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './routes/Detail.js';
+import axios from 'axios';
 
 function App() {
 
-  let [jellys] = useState(data);
+  let [jellys, setJellys] = useState(data);
+  let [page, setPage] = useState(1);
   let navigate = useNavigate();
+
+  function addJellys(list) {
+    let tempJellys = [...jellys, ...list];
+    console.log(`tmpJellys : ${tempJellys}`);
+    setJellys(tempJellys);
+  }
 
   return (
     <div className="App">
@@ -46,6 +54,18 @@ function App() {
         <Route path="*" element={<div>Invalid Access.</div>}/>
       </Routes>
 
+      <button onClick={()=>{
+          // 외부 라이브러리 사용
+          axios.get('https://codingapple1.github.io/shop/data' + (page + 1) + '.json')
+          .then((result)=>{
+            setPage(page + 1);
+            addJellys(result.data);
+          })
+          .catch(()=>{
+            console.log("ajax 요청 실패함");
+          })
+        }}>더보기</button>
+
     </div>
   );
   function About() {
@@ -69,7 +89,8 @@ function App() {
 function Card(props) {
   return (
     <Col>
-      <img height="300px" src={ props.data.image }/>
+      {/* <img height="300px" src={ props.data.image }/> */}
+      <img height="300px" src={"https://codingapple1.github.io/shop/shoes" + (props.data.id + 1) + ".jpg"}/>
       <h4>{ props.data.title }</h4>
       <p>{ props.data.price }</p>
     </Col>

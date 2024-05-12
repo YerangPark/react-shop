@@ -23,7 +23,7 @@ function App() {
     <div className="App">
       <Navbar bg="light" data-bs-theme="light">
         <Container>
-          <Navbar.Brand onClick={()=>{ navigate('/') }}>Jelly Rang</Navbar.Brand>
+          <Navbar.Brand onClick={()=>{ navigate('/') }}>Shoes Rang</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
             <Nav.Link onClick={()=>{ navigate('/detail') }}>Detail</Nav.Link>

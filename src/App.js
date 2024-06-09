@@ -1,22 +1,30 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // Bootstrap
-import { Button, Container, Nav, Navbar, Row, Col} from 'react-bootstrap';
+import { Container, Nav, Navbar, Row, Col} from 'react-bootstrap';
 import data from './data.js';
-import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
+import { Routes, Route, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './routes/Detail.js';
 import axios from 'axios';
 
 function App() {
 
-  let [jellys, setJellys] = useState(data);
+  let [shoes, setShoes] = useState(data);
   let [page, setPage] = useState(1);
+  let [moreBtn, setMoreBtn] = useState(true);
+  let [loadMsg, setLoadMsg] = useState(false);
   let navigate = useNavigate();
 
-  function addJellys(list) {
-    let tempJellys = [...jellys, ...list];
-    console.log(`tmpJellys : ${tempJellys}`);
-    setJellys(tempJellys);
+  useEffect(()=>{
+    if (page >= 3) {
+      setMoreBtn(false);
+    }
+  }, [page])
+
+  function addShoes(list) {
+    let tempShoes = [...shoes, ...list];
+    console.log(`tempShoes : ${tempShoes}`);
+    setShoes(tempShoes);
   }
 
   return (
@@ -39,10 +47,31 @@ function App() {
           <>
             <div className="main-bg"></div>
             <br/>
-            <Row> {jellys.map((data)=>{return (<Card data={ data }/>)})} </Row>
+            <Row> {shoes.map((data)=>{return (<Card data={ data }/>)})} </Row>
+
+            { (loadMsg === true) ? <h3>로딩중입니다.</h3> : null }
+            {
+              moreBtn === true
+              ? <button onClick={()=>{
+                  setLoadMsg(true);
+                  // AJAX - 외부 라이브러리 사용
+                  // console.log(`page : ${page}`);
+                  axios.get('https://codingapple1.github.io/shop/data' + (page + 1) + '.json')
+                  .then((result)=>{
+                    setPage(page + 1);
+                    addShoes(result.data);
+                    setLoadMsg(false);
+                  })
+                  .catch(()=>{
+                    console.log("ajax 요청 실패함");
+                    setLoadMsg(false);
+                  })
+                }}>더보기</button>
+              : null
+            }
           </>
         }/>
-        <Route path="/detail/:id" element={ <Detail data={ jellys }/> }/>
+        <Route path="/detail/:id" element={ <Detail data={ shoes }/> }/>
         {/* <Route path="/about" element={<About/>}>
           <Route path="member" element={<div>멤버임</div>}/>
           <Route path="location" element={<div>오시는 길임</div>}/>
@@ -53,19 +82,6 @@ function App() {
         </Route> */}
         <Route path="*" element={<div>Invalid Access.</div>}/>
       </Routes>
-
-      <button onClick={()=>{
-          // 외부 라이브러리 사용
-          axios.get('https://codingapple1.github.io/shop/data' + (page + 1) + '.json')
-          .then((result)=>{
-            setPage(page + 1);
-            addJellys(result.data);
-          })
-          .catch(()=>{
-            console.log("ajax 요청 실패함");
-          })
-        }}>더보기</button>
-
     </div>
   );
   function About() {

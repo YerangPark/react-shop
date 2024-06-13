@@ -5,6 +5,7 @@ import { Container, Nav, Navbar, Row, Col} from 'react-bootstrap';
 import data from './data.js';
 import { Routes, Route, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './routes/Detail.js';
+import Cart from './routes/Cart.js';
 import axios from 'axios';
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
           </>
         }/>
         <Route path="/detail/:id" element={ <Detail data={ shoes }/> }/>
+        <Route path="/cart" element={<Cart/>} />
         {/* <Route path="/about" element={<About/>}>
           <Route path="member" element={<div>멤버임</div>}/>
           <Route path="location" element={<div>오시는 길임</div>}/>
@@ -106,7 +108,7 @@ function Card(props) {
   return (
     <Col>
       {/* <img height="300px" src={ props.data.image }/> */}
-      <img height="300px" src={"https://codingapple1.github.io/shop/shoes" + (props.data.id + 1) + ".jpg"}/>
+      <img height="300px" src={"https://codingapple1.github.io/shop/shoes" + (props.data.id + 1) + ".jpg"} alt=""/>
       <h4>{ props.data.title }</h4>
       <p>{ props.data.price }</p>
     </Col>

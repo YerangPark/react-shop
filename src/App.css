@@ -3,6 +3,25 @@ body {
   font-family: 'Nanum Square';
 }
 
+.start {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.end {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.5s; /* 우측의 스타일이 변경될 때 0.5초에 걸쳐서 변화되게 함. */
+}
+
+.page-start {
+  opacity: 0;
+}
+.page-end {
+  opacity: 1;
+  transition: all 0.5s; /* 우측의 스타일이 변경될 때 0.5초에 걸쳐서 변화되게 함. */
+}
+
 .main-bg {
   height : 500px;
   background-image: url(./img/bg.png);

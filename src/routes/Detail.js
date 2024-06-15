@@ -1,12 +1,15 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useDispatch } from 'react-redux';
 import Nav from 'react-bootstrap/Nav';
 // import styled from 'styled-components';
+import { addCart } from './../store.js';
+
 
 function Detail(props) {
 
   let {id} = useParams();
-  let keyIdx = props.data.findIndex(obj => obj.id === parseInt(id));
+  const keyIdx = props.data.findIndex(obj => obj.id === parseInt(id));
   // let [count, setCount] = useState(0);
   let [alert, setAlert] = useState(true);
   let [amount, setAmount] = useState(0);
@@ -16,6 +19,8 @@ function Detail(props) {
 
   // for tabs
   let [tab, setTab] = useState(0); // 0 : 0번 탭 표시
+
+  let dispatch = useDispatch(); // store.js로 요청을 보내주는 함수
 
   useEffect(()=>{
     let timer = setTimeout(()=>{ setAlert(false); }, 2000);
@@ -34,6 +39,13 @@ function Detail(props) {
       clearTimeout(a);
       setFadeClass('');
     }
+  }, [])
+
+  useEffect(()=>{
+    let watched = new Set(JSON.parse(localStorage.getItem('watched')));
+    watched.add(keyIdx)
+    localStorage.setItem('watched', JSON.stringify([...watched]))
+    // console.log();
   }, [])
 
   function checkValidNumber(val) {
@@ -74,7 +86,9 @@ function Detail(props) {
                     : null
                   }
                 </div>
-                <button className="btn btn-danger">주문하기</button>
+                <button className="btn btn-danger" onClick={()=>{dispatch(addCart(props.data[keyIdx]));}}>
+                  주문하기
+                </button>
               </div>
           </div>
 
